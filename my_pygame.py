@@ -4,19 +4,21 @@ canvas_width = 800
 canvas_height = 600
 
 screen = pygame.display.set_mode((canvas_width, canvas_height))
+myfont = pygame.font.SysFont("monospace", 30)
 
 clock = pygame.time.Clock()
 done = False
 
 class Button(object):
-    def __init__(self, name, xcoor, ycoor, width, height):
+    def __init__(self, name, image, xcoor, ycoor, width, height):
         self.name = name
+        self.image = image
         self.xcoor = xcoor
         self.ycoor = ycoor
         self.width = width
         self.height = height
     def draw_button(self):
-        pygame.draw.rect(screen, (175, 175, 175), (self.xcoor, self.ycoor, self.width, self.height))
+        screen.blit(self.image, (self.xcoor, self.ycoor))
 class Bowl:
     def __init__(self, ingredients = []):
         self.ingredients = ingredients
@@ -36,21 +38,22 @@ class Bowl:
 
 
 #All ingredients in game
+lettuce_image = pygame.image.load('lettuce.png')
 ingredient_y = 300
 ingredient_width = 75
 ingredient_height = 150
 shape = (ingredient_y, ingredient_width, ingredient_height)
-lettuce = Button("Lettuce", 150, *shape)
-olives = Button("Kalamata Olives", 235, *shape)
-cheese = Button("Blue Cheese", 320, *shape)
-tomatoes = Button("Cherry Tomatoes", 405, *shape)
-croutons = Button("Croutons", 490, *shape)
-dressing = Button("Dressing", 575, *shape)
+lettuce = Button("Lettuce", lettuce_image, 150, *shape)
+olives = Button("Kalamata Olives", lettuce_image, 235, *shape)
+cheese = Button("Blue Cheese", lettuce_image, 320, *shape)
+tomatoes = Button("Cherry Tomatoes", lettuce_image, 405, *shape)
+croutons = Button("Croutons", lettuce_image, 490, *shape)
+dressing = Button("Dressing", lettuce_image, 575, *shape)
 
 list_of_ingredients = [lettuce, olives, cheese, tomatoes, croutons, dressing]
 
 #Other Buttons
-order_up = Button("Order Up", 300, 500, 200, 75)
+order_up = Button("Order Up", lettuce_image, 300, 500, 200, 75)
 
 bowl_key = Bowl()
 bowl_key.generate_order(list_of_ingredients)
@@ -86,7 +89,6 @@ while not done:
 
         order_up.draw_button()
         current_order = ", ".join(bowl_key.ingredients)
-        myfont = pygame.font.SysFont("monospace", 30)
         label = myfont.render("%s" % current_order, 1, (0, 0, 0))
         score_label = myfont.render("%s" % score, 2, (0, 0, 0))
         screen.blit(label, (50, 75))
