@@ -89,8 +89,7 @@ while not done:
             for button in list_of_ingredients:
                 if x >= button.xcoor and x <= button.xcoor + button.width and y >= button.ycoor and y <= button.ycoor + button.height:
                     bowl.add_ingredient(button)
-                    button.ycoor += 5
-
+        
             if x >= order_up.xcoor and x <= order_up.xcoor + order_up.width and y >= order_up.ycoor and y <= order_up.ycoor + order_up.height:
                 if bowl.ingredients == bowl_key.ingredients:
                     score += 1
