@@ -75,10 +75,6 @@ while not done:
                     score += 1
                 bowl.empty()
                 bowl_key.generate_order(list_of_ingredients)
-                print bowl
-                print bowl_key
-                print score
-            
             
         if event.type == pygame.QUIT:
             done = True
@@ -93,6 +89,14 @@ while not done:
         dressing.draw_button()
 
         order_up.draw_button()
+        current_order = ""
+        for entry in bowl_key.ingredients:
+            current_order = "%s %s " % (current_order, entry)
+        myfont = pygame.font.SysFont("monospace", 30)
+        label = myfont.render("%s" % current_order, 1, (0, 0, 0))
+        score_label = myfont.render(" %s" % score, 2, (0, 0, 0))
+        screen.blit(label, (50, 75))
+        screen.blit(score_label, (50, 100))
 
         pygame.display.update()
         clock.tick(60)
