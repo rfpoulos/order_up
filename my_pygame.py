@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, time
 pygame.init()
 canvas_width = 800
 canvas_height = 600
@@ -36,19 +36,40 @@ class Bowl:
             if options[randindex].name not in self.ingredients:
                 self.add_ingredient(options[randindex])
 
+def draw_buttons():
+    lettuce.draw_button()
+    olives.draw_button()
+    cheese.draw_button()
+    tomatoes.draw_button()
+    croutons.draw_button()
+    dressing.draw_button()
+
+    order_up.draw_button()
+    current_order = ", ".join(bowl_key.ingredients)
+    label = myfont.render("%s" % current_order, 1, (0, 0, 0))
+    score_label = myfont.render("%s" % score, 2, (0, 0, 0))
+    screen.blit(label, (50, 75))
+    screen.blit(score_label, (50, 100))
+    pygame.display.update()
 
 #All ingredients in game
 lettuce_image = pygame.image.load('lettuce.png')
+olives_image = pygame.image.load('olives.png')
+cheese_image = pygame.image.load('cheese.png')
+tomatoes_image = pygame.image.load('tomatoes.png')
+croutons_image = pygame.image.load('croutons.png')
+dressing_image = pygame.image.load('dressing.png')
+
 ingredient_y = 300
 ingredient_width = 75
 ingredient_height = 150
 shape = (ingredient_y, ingredient_width, ingredient_height)
 lettuce = Button("Lettuce", lettuce_image, 150, *shape)
-olives = Button("Kalamata Olives", lettuce_image, 235, *shape)
-cheese = Button("Blue Cheese", lettuce_image, 320, *shape)
-tomatoes = Button("Cherry Tomatoes", lettuce_image, 405, *shape)
-croutons = Button("Croutons", lettuce_image, 490, *shape)
-dressing = Button("Dressing", lettuce_image, 575, *shape)
+olives = Button("Kalamata Olives", olives_image, 235, *shape)
+cheese = Button("Blue Cheese", cheese_image, 320, *shape)
+tomatoes = Button("Cherry Tomatoes", tomatoes_image, 405, *shape)
+croutons = Button("Croutons", croutons_image, 490, *shape)
+dressing = Button("Dressing", dressing_image, 575, *shape)
 
 list_of_ingredients = [lettuce, olives, cheese, tomatoes, croutons, dressing]
 
@@ -68,7 +89,8 @@ while not done:
             for button in list_of_ingredients:
                 if x >= button.xcoor and x <= button.xcoor + button.width and y >= button.ycoor and y <= button.ycoor + button.height:
                     bowl.add_ingredient(button)
-                    print bowl
+                    button.ycoor += 5
+
             if x >= order_up.xcoor and x <= order_up.xcoor + order_up.width and y >= order_up.ycoor and y <= order_up.ycoor + order_up.height:
                 if bowl.ingredients == bowl_key.ingredients:
                     score += 1
@@ -79,22 +101,7 @@ while not done:
             done = True
         screen.fill((225, 225, 225))
         
-        #draw buttons
-        lettuce.draw_button()
-        olives.draw_button()
-        cheese.draw_button()
-        tomatoes.draw_button()
-        croutons.draw_button()
-        dressing.draw_button()
-
-        order_up.draw_button()
-        current_order = ", ".join(bowl_key.ingredients)
-        label = myfont.render("%s" % current_order, 1, (0, 0, 0))
-        score_label = myfont.render("%s" % score, 2, (0, 0, 0))
-        screen.blit(label, (50, 75))
-        screen.blit(score_label, (50, 100))
-
-        pygame.display.update()
+        draw_buttons()
         clock.tick(60)
         
 pygame.quit()
