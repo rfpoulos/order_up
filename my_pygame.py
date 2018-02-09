@@ -9,18 +9,14 @@ clock = pygame.time.Clock()
 done = False
 
 class Button(object):
-    def __init__(self, xcoor, ycoor, width, height):
+    def __init__(self, name, xcoor, ycoor, width, height):
+        self.name = name
         self.xcoor = xcoor
         self.ycoor = ycoor
         self.width = width
         self.height = height
     def draw_button(self):
         pygame.draw.rect(screen, (175, 175, 175), (self.xcoor, self.ycoor, self.width, self.height))
-
-class IngredientButton(Button):
-    def __init__(self, name, *args):
-        super(IngredientButton, self).__init__(*args)
-        self.name = name
 class Bowl:
     def __init__(self, ingredients = []):
         self.ingredients = ingredients
@@ -44,17 +40,17 @@ ingredient_y = 300
 ingredient_width = 75
 ingredient_height = 150
 shape = (ingredient_y, ingredient_width, ingredient_height)
-lettuce = IngredientButton("Lettuce", 150, *shape)
-olives = IngredientButton("Kalamata Olives", 235, *shape)
-cheese = IngredientButton("Blue Cheese", 320, *shape)
-tomatoes = IngredientButton("Cherry Tomatoes", 405, *shape)
-croutons = IngredientButton("Croutons", 490, *shape)
-dressing = IngredientButton("Dressing", 575, *shape)
+lettuce = Button("Lettuce", 150, *shape)
+olives = Button("Kalamata Olives", 235, *shape)
+cheese = Button("Blue Cheese", 320, *shape)
+tomatoes = Button("Cherry Tomatoes", 405, *shape)
+croutons = Button("Croutons", 490, *shape)
+dressing = Button("Dressing", 575, *shape)
 
 list_of_ingredients = [lettuce, olives, cheese, tomatoes, croutons, dressing]
 
 #Other Buttons
-order_up = Button(300, 500, 200, 75)
+order_up = Button("Order Up", 300, 500, 200, 75)
 
 bowl_key = Bowl()
 bowl_key.generate_order(list_of_ingredients)
@@ -89,12 +85,10 @@ while not done:
         dressing.draw_button()
 
         order_up.draw_button()
-        current_order = ""
-        for entry in bowl_key.ingredients:
-            current_order = "%s %s " % (current_order, entry)
+        current_order = ", ".join(bowl_key.ingredients)
         myfont = pygame.font.SysFont("monospace", 30)
         label = myfont.render("%s" % current_order, 1, (0, 0, 0))
-        score_label = myfont.render(" %s" % score, 2, (0, 0, 0))
+        score_label = myfont.render("%s" % score, 2, (0, 0, 0))
         screen.blit(label, (50, 75))
         screen.blit(score_label, (50, 100))
 
