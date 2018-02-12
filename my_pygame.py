@@ -7,7 +7,6 @@ screen = pygame.display.set_mode((canvas_width, canvas_height))
 myfont = pygame.font.SysFont("monospace", 30)
 
 clock = pygame.time.Clock()
-done = False
 
 class Button(object):
     def __init__(self, name, image, xcoor, ycoor, width, height):
@@ -21,9 +20,8 @@ class Button(object):
         self.is_toggle = False
 
     def is_clicked(self, position):
-        if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = position
-            if x >= self.xcoor and x <= self.xcoor + self.width and y >= self.ycoor and y <= self.ycoor + self.height:
+            if self.xcoor <= x <= self.xcoor + self.width and self.ycoor <= y <= self.ycoor + self.height:
                 return True
             else:
                 return False
@@ -31,14 +29,14 @@ class Button(object):
         if self.is_toggle == False:
             self.is_toggle = True
             self.ticks = pygame.time.get_ticks()
-            self.ycoor -= 5
+            self.ycoor += 5
 
     def draw_button(self):
-        toggle_stickiness = 15
+        toggle_stickiness = 25
         if self.ticks == 0:
             pass
         elif (self.is_toggle == True) and (self.ticks + toggle_stickiness <= pygame.time.get_ticks()):
-            self.ycoor += 5
+            self.ycoor -= 5
             self.ticks = 0
             self.is_toggle = False
 
@@ -60,25 +58,27 @@ class Bowl:
             randindex = random.randint(1, len(options)) - 1
             if options[randindex].name not in self.ingredients:
                 self.add_ingredient(options[randindex])
-
 def draw_buttons():
-    lettuce.draw_button()
-    olives.draw_button()
-    cheese.draw_button()
-    tomatoes.draw_button()
-    croutons.draw_button()
-    dressing.draw_button()
+    if level == 0:
+        order_up.draw_button()
+    if level == 1:
+        lettuce.draw_button()
+        olives.draw_button()
+        cheese.draw_button()
+        tomatoes.draw_button()
+        croutons.draw_button()
+        dressing.draw_button()
 
-    order_up.draw_button()
+        order_up.draw_button()
 
-    current_order = ", ".join(bowl_key.ingredients)
-    current_bowl = ", ".join(bowl.ingredients)
-    key_label = myfont.render("%s" % current_order, 1, (0, 0, 0))
-    score_label = myfont.render("%s" % score, 2, (0, 0, 0))
-    bowl_label = myfont.render("%s" % current_bowl, 1, (0, 0, 0))
-    screen.blit(key_label, (50, 75))
-    screen.blit(score_label, (50, 100))
-    screen.blit(bowl_label, (50, 125))
+        current_order = ", ".join(bowl_key.ingredients)
+        current_bowl = ", ".join(bowl.ingredients)
+        key_label = myfont.render("%s" % current_order, 1, (0, 0, 0))
+        score_label = myfont.render("%s" % score, 2, (0, 0, 0))
+        bowl_label = myfont.render("%s" % current_bowl, 1, (0, 0, 0))
+        screen.blit(key_label, (50, 75))
+        screen.blit(score_label, (50, 100))
+        screen.blit(bowl_label, (50, 125))
     pygame.display.update()
 
 #All ingredients in game
@@ -110,21 +110,27 @@ bowl_key = Bowl()
 bowl_key.generate_order(list_of_ingredients)
 bowl = Bowl()
 score = 0
+level = 0
+done = False
 while not done:
     for event in pygame.event.get():
-        pressed = pygame.key.get_pressed()
-        if event.type == pygame.MOUSEBUTTONDOWN:          
-            for button in list_of_ingredients:
-                if button.is_clicked(event.pos):
-                    bowl.add_ingredient(button)
-                    button.toggle()
-            
-            if order_up.is_clicked(event.pos):
-                if bowl_key.ingredients == bowl.ingredients:
-                    score += 1
-                order_up.toggle()
-                bowl.empty()
-                bowl_key.generate_order(list_of_ingredients)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if level == 0:
+                if order_up.is_clicked(event.pos):
+                    order_up.toggle()
+                    level = 1
+            if level == 1:          
+                for button in list_of_ingredients:
+                        if button.is_clicked(event.pos):
+                            bowl.add_ingredient(button)
+                            button.toggle()
+                    
+                if order_up.is_clicked(event.pos):
+                    if bowl_key.ingredients == bowl.ingredients:
+                        score += 1
+                    order_up.toggle()
+                    bowl.empty()
+                    bowl_key.generate_order(list_of_ingredients)
             
         if event.type == pygame.QUIT:
             done = True
