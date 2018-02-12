@@ -72,10 +72,13 @@ def draw_buttons():
     order_up.draw_button()
 
     current_order = ", ".join(bowl_key.ingredients)
-    label = myfont.render("%s" % current_order, 1, (0, 0, 0))
+    current_bowl = ", ".join(bowl.ingredients)
+    key_label = myfont.render("%s" % current_order, 1, (0, 0, 0))
     score_label = myfont.render("%s" % score, 2, (0, 0, 0))
-    screen.blit(label, (50, 75))
+    bowl_label = myfont.render("%s" % current_bowl, 1, (0, 0, 0))
+    screen.blit(key_label, (50, 75))
     screen.blit(score_label, (50, 100))
+    screen.blit(bowl_label, (50, 125))
     pygame.display.update()
 
 #All ingredients in game
