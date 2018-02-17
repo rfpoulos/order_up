@@ -82,12 +82,12 @@ def draw_buttons():
     pygame.display.update()
 
 #All ingredients in game
-lettuce_image = pygame.image.load('lettuce.png')
-olives_image = pygame.image.load('olives.png')
-cheese_image = pygame.image.load('cheese.png')
-tomatoes_image = pygame.image.load('tomatoes.png')
-croutons_image = pygame.image.load('croutons.png')
-dressing_image = pygame.image.load('dressing.png')
+lettuce_image = pygame.image.load('./images/lettuce.png')
+olives_image = pygame.image.load('./images/olives.png')
+cheese_image = pygame.image.load('./images/cheese.png')
+tomatoes_image = pygame.image.load('./images/tomatoes.png')
+croutons_image = pygame.image.load('./images/croutons.png')
+dressing_image = pygame.image.load('./images/dressing.png')
 
 ingredient_y = 300
 ingredient_width = 75
@@ -103,7 +103,7 @@ dressing = Button("Dressing", dressing_image, 575, *shape)
 list_of_ingredients = [lettuce, olives, cheese, tomatoes, croutons, dressing]
 
 #Other Buttons
-order_up_image = pygame.image.load('orderup.png')
+order_up_image = pygame.image.load('./images/orderup.png')
 order_up = Button("Order Up", order_up_image, 300, 500, 200, 75)
 
 bowl_key = Bowl()
